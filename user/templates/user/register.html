@@ -1,0 +1,48 @@
+{% extends "user/base.html" %}
+
+{% block content %}
+
+<div class="col-md-8 mt-4">
+    <div class="card mb-4 mt-4">
+        <div class="card-header">
+            Create An Account
+        </div>
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                {% for field in form %}
+                <p>
+                    {{ field }}
+                    {% if field.help_text %}
+                    <small style="color: grey">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                <p style="color: red"><br/>{{ error }}</p>
+                {% endfor %}
+                </p>
+                {% endfor %}
+
+                <div class="row form-group mb-4">
+                    <div class="col-md-12 mb-3 mb-md-0">
+                        <input type="submit" value="Create Account"
+                               class="btn px-4 btn-primary form-control text-white">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    const form_fields = document.getElementsByTagName("input");
+
+    form_fields[1].placeholder = 'Email Address'
+    form_fields[2].placeholder = 'Name'
+    form_fields[3].placeholder = 'Password'
+    form_fields[4].placeholder = 'Confirm Password'
+
+    for (let i = 1; i < form_fields.length; i++) {
+        form_fields[i].classList += 'form-control';
+    }
+</script>
+
+{% endblock %}

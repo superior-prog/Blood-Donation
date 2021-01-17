@@ -1,0 +1,26 @@
+{% extends "entries/base.html" %}
+
+{% block content %}
+<!-- Blog Entries Column -->
+<div class="col-md-8 mt-4">
+    <a href="{% url 'blog-home' %}">Back to Home</a>
+
+    <!-- Blog Post -->
+    <div class="card mb-4 mt-4">
+
+        <div class="card-header">
+            Delete Post
+        </div>
+
+        <div class="card-body">
+            <p>Are you sure you want to delete <b>{{task}}</b>?</p>
+            <a href="{% url 'entry-detail' object.id %}">Cancel</a>
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">Delete Blog</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

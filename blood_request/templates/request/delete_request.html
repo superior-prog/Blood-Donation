@@ -1,0 +1,23 @@
+{% extends "request/base.html" %}
+
+{% block content %}
+
+<div class="col-md-8 mt-4">
+    <div class="card mb-4 mt-4">
+
+        <div class="card-header">
+            Delete Request
+        </div>
+
+        <div class="card-body">
+            <p class="h3 ">Are you sure you want to delete the request for <b>{{request_item.blood_group}}</b>?</p>
+            <a class="btn btn-secondary btn-block" href="{% url 'request-detail' request_item.id %}">Cancel</a>
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-block mt-2">Delete Request</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

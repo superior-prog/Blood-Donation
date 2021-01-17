@@ -1,0 +1,152 @@
+{% extends "request/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid p-5">
+    <div class="row">
+
+        <div class="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3">
+
+            <div class="card mb-3">
+                {% if user.profilemodel.image %}
+                <img alt="{{ user.name }}" class="card-img-top" src="{{ user.profilemodel.image.url }}">
+                {% else %}
+                <img alt="{{ user.name }}" class="card-img-top" src="{% static 'img\profile.jpg' %}">
+                {% endif %}
+                <div class="card-body">
+                    <h2 class="card-title">{{ user.name }}</h2>
+
+                    {% if age %}
+                    <p>{{ age }} years old</p>
+                    {% endif %}
+
+                    {% if profile.blood_group %}
+                    <h3 class="card-subtitle mb-2 text-muted">{{ profile.blood_group }} Donor</h3>
+                    {% elif request.user == profile.user %}
+                    <a class="btn btn-outline-info rounded" href="{% url 'edit-profile' %}"> + Add Blood Group</a>
+                    <br/><br/>
+                    {% endif %}
+
+                    {% if profile.gender %}
+                    <h5 class="card-subtitle mb-2 text-muted">{{ profile.gender }}</h5>
+                    {% endif %}
+                </div>
+                <div class="card-footer text-muted" style="text-align: center">
+                    Member Since {{user.date_joined.date}}
+                </div>
+
+                {% if request.user == profile.user %}
+                <div class="card-footer">
+                    <a class="btn btn-primary btn-block" href="{% url 'edit-profile' %}">
+                        Edit Profile
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+
+        </div>
+
+
+        <div class="col-12 col-sm-12 col-md-7 col-lg-8 col-xl-9">
+
+            <div class="card text-left mb-3">
+                <div class="card-header">
+                    <p class="h3">General Information</p>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-sm-6">
+                            <div class="card w-40">
+                                <div class="card-body">
+                                    <h4 class="card-title">Stats</h4>
+                                    <p class="h5">{{ total_requests }} Requests</p>
+                                    <p class="h5">{{ total_events }} Events</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <div class="card w-40">
+                                <div class="card-body">
+                                    <h4 class="card-title">User Information</h4>
+                                    <p>Email: <a href="mailto:{{user.email}}">{{ user.email }}</a>
+                                    </p>
+                                    {% if profile.phone %}
+                                    Mobile: <a href="tel:{{profile.phone}}">{{ profile.phone }}</a>
+                                    {% elif request.user == profile.user %}
+                                    <button class="btn btn-outline-info rounded"> + Add Phone Number</button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            {% if request_list %}
+            <div class="card text-left mb-3">
+                <div class="card-header">
+                    <p class="h3">Requests</p>
+                </div>
+                {% for request_item in request_list %}
+
+                    <div class="card-body">
+                        <p>
+                            <span class="card-title h1 text-danger">{{ request_item.blood_group }}</span>
+                            <span class="h4"> Blood Needed</span>
+                        </p>
+                        <p class="card-text">
+                            <b>Address:</b> {{ request_item.address }}<br/>
+                            <b>Needed Within: {{ request_item.needed_within }}</b> <br/>
+                        </p>
+
+                        <a class="btn btn-primary rounded" href="{% url 'request-detail' request_item.id %}">See More &rarr;</a>
+
+                    </div>
+
+                    <div class="card-footer text-muted">
+                        Posted on <b>{{ request_item.posted_on }}</b> by
+                        <a href="{% url 'profile' request_item.user.id %}"> <b>{{ request_item.user.name }}</b></a>
+                    </div>
+
+                {% endfor%}
+            </div>
+            {% endif %}
+
+            {% if events %}
+            <div class="card text-left mb-3">
+                <div class="card-header">
+                    <p class="h3">Events</p>
+                </div>
+                {% for event_item in events %}
+
+                {% if event_item.image %}
+                <a href="{% url 'event-detail' event_item.id %}"><img alt="{{ event_item.name }}" class="card-img-top" src="{{ event_item.image.url }}" style="height: 400px;"></a>
+                {% endif %}
+
+                    <div class="card-body">
+                        <a href="{% url 'event-detail' event_item.id %}" class=" h3 card-title">{{ event_item.name }}</a>
+                        <p class="card-text">
+                            Location: {{ event_item.location }}<br/>
+                            From {{ event_item.start_datetime }} To {{ event_item.end_datetime }}<br/>
+                        </p>
+
+                        <a class="btn btn-primary rounded" href="{% url 'event-detail' event_item.id %}">See More &rarr;</a>
+
+                    </div>
+
+                    <div class="card-footer text-muted">
+                        Host <a href="{% url 'profile' event_item.host.id %}"> <b>{{ event_item.host.name }}</b></a>
+                    </div>
+
+                {% endfor%}
+            </div>
+            {% endif %}
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

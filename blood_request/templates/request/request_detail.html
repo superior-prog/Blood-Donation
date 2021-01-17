@@ -1,0 +1,37 @@
+{% extends "request/base.html" %}
+
+{% block content %}
+
+<!-- Blog Entries Column -->
+<div class="col-md-8">
+    <!-- Blog Post -->
+    <div class="card mb-4 mt-4">
+        <div class="card-body">
+            <p>
+                <span class="card-title h1 text-danger">{{ request_item.blood_group }}</span>
+                <span class="h4"> Blood Needed</span>
+            </p>
+
+            {% if request.user == request_item.user %}
+            <a class="btn btn-outline-info" href="{% url 'edit-request' request_item.id %}">Edit</a>
+            <a class="btn btn-outline-danger" href="{% url 'delete-request' request_item.id %}">Delete</a>
+            {% endif %}
+            <br/>
+
+            <p class="card-text">
+                <b>Address:</b> {{ request_item.address }}<br/> <br/>
+                <b>Needed Within: {{ request_item.needed_within }}</b> <br/>
+            </p>
+
+            <p class="card-text"><b>Notes: </b>{{ request_item.note|linebreaks}}</p>
+        </div>
+        <div class="card-footer text-muted">
+            Posted on {{ request_item.posted_on}} by
+            <a href="{% url 'profile' request_item.user.id %}"><span class="text-info mr-2">{{ request_item.user.name }}</span></a>
+        </div>
+        <div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

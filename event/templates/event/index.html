@@ -1,0 +1,71 @@
+{% extends "event/base.html" %}
+
+{% block content %}
+
+
+<div class="col-md-8">
+    {% if not request.user.profilemodel.blood_group %}
+    <div class="alert alert-warning mt-4" role="alert">
+        You haven't added your Blood Group yet.
+        <a class="btn btn-info text-white text-center rounded" href="{% url 'edit-profile' %}"> + Add Now</a>
+        <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+
+    {% if event_list %}
+    {% for event_item in event_list %}
+
+    <div class="card mb-3 mt-5" style="width: 700px;">
+
+        {% if event_item.image %}
+        <a href="{% url 'event-detail' event_item.id %}"><img alt="{{ event_item.name }}" class="card-img-top" src="{{ event_item.image.url }}" style="height: 400px;"></a>
+        {% endif %}
+
+        <div class="card-body">
+            <a href="{% url 'event-detail' event_item.id %}" class=" h3 card-title">{{ event_item.name }}</a>
+            <p class="card-text">
+                Location: {{ event_item.location }}<br/>
+                From {{ event_item.start_datetime }} To {{ event_item.end_datetime }}<br/>
+            </p>
+
+            <a class="btn btn-primary rounded" href="{% url 'event-detail' event_item.id %}">See More &rarr;</a>
+
+        </div>
+        <div class="card-footer text-muted">
+            Hosted by <a href="{% url 'profile' event_item.host.id %}"> <b>{{ event_item.host.name }}</b></a>
+        </div>
+    </div>
+
+    {% endfor%}
+    {% else %}
+    <p class="mt-5" style="color: gray;">No Events found.</p>
+    {% endif %}
+
+    <!--    {% if is_paginated %}-->
+    <!--    &lt;!&ndash; Pagination &ndash;&gt;-->
+    <!--    <ul class="pagination justify-content-center mb-4">-->
+    <!--        {% if page_obj.has_previous %}-->
+    <!--        <li class="page-item">-->
+    <!--            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&larr; Previous Page</a>-->
+    <!--        </li>-->
+    <!--        {% endif %}-->
+
+    <!--        {% if page_obj.has_next %}-->
+    <!--        <li class="page-item">-->
+    <!--            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next Page &rarr;</a>-->
+    <!--        </li>-->
+    <!--        {% endif %}-->
+    <!--    </ul>-->
+    <!--    {% endif %}-->
+
+</div>
+
+
+<!-- Sidebar Widgets Column -->
+<div class="col-md-4 mt-5">
+    <a class="btn btn-success btn-block rounded" href="{% url 'create-event' %}">Create New Event</a>
+</div>
+
+{% endblock %}

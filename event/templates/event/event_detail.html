@@ -1,0 +1,51 @@
+{% extends "event/base.html" %}
+
+{% block content %}
+
+<div class="col-md-8">
+
+    <div class="card mb-4 mt-4">
+        {% if event.image %}
+        <img alt="{{ event.name }}" class="card-img-top" src="{{ event.image.url }}" style="height: 400px;">
+        {% endif %}
+        <div class="card-body">
+            <h3 class="card-title">{{ event.name }}</h3>
+            {% if request.user == event.host %}
+           <a class="btn btn-outline-info" href="{% url 'edit-event' event.id %}">Edit</a>
+            <a class="btn btn-outline-danger" href="{% url 'delete-event' event.id %}">Delete</a>
+            {% endif %}
+            <p class="card-text">{{ event.description|linebreaks }}</p>
+        </div>
+        <div class="card-footer text-muted">
+            Hosted by <span class="text-info mr-2">{{ event.host.name }}</span>
+        </div>
+        <div>
+
+        </div>
+    </div>
+</div>
+
+
+{% if request.user == event.host %}
+<!-- Sidebar Widgets Column -->
+<div class="col-md-4 mt-4">
+    <!-- Side Widget -->
+    <div class="card">
+        <h5 class="card-header text-center">Invite People</h5>
+        <div class="card-body">
+            <table class="table table-hover">
+
+                {% for profile in profiles %}
+                <tr>
+                    <td><a href="{% url 'profile' profile.user.id %}" class="card-link">{{ profile.user.name }}</a></td>
+                    <td>{{ profile.blood_group }}</td>
+                </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

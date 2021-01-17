@@ -1,0 +1,65 @@
+{% extends "event/base.html" %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="col-md-8 mt-4">
+    <div class="card my-4">
+        <div class="col-lg-12">
+            <div class="card-header">
+                <h3 class="text-black">{{ task }} Event</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label>Event Name</label><br/>
+                        {{form.name|add_class:"form-control"}}
+                        {{form.name.errors}}
+                    </div>
+                    <div class="form-group">
+                        <label>Event Description</label><br/>
+                        {{form.description|add_class:"form-control"}}
+                        {{form.description.errors}}
+                    </div>
+                    <div class="form-group">
+                        <label>Event Location</label><br/>
+                        {{form.location|add_class:"form-control"}}
+                        {{form.location.errors}}
+                    </div>
+                    <div class="form-group">
+                        <label>Event Begins</label>
+                        {{form.start_datetime|add_class:"form-control"}}
+                        {{form.start_datetime.errors}}
+                    </div>
+                    <div class="form-group">
+                        <label>Event Ends</label>
+                        {{form.end_datetime|add_class:"form-control"}}
+                        {{form.end_datetime.errors}}
+                    </div>
+                    <div class="form-group">
+                        <label>Event Image (Optional)</label> <br>
+                        {{form.image|add_class:"form-control"}}
+                        {{form.image.errors}}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.non_field_errors }}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">{{ task }} Event</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const form_fields = document.getElementsByTagName("input")
+
+    form_fields[2].placeholder = 'Name'
+    form_fields[3].placeholder = 'Location'
+</script>
+
+{% endblock %}

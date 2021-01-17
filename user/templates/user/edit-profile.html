@@ -1,0 +1,147 @@
+{% extends "request/base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+<div class="container-fluid p-5">
+    <div class="row">
+
+        <div class="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3">
+
+            <div class="card mb-3">
+                {% if request.user.profilemodel.image %}
+                <img alt="{{ user.name }}" class="card-img-top" src="{{request.user.profilemodel.image.url}}">
+                {% else %}
+                <img alt="{{ user.name }}" class="card-img-top" src="{% static 'img\profile.jpg' %}">
+                {% endif %}
+                <div class="card-body">
+                    <h2 class="card-title">{{ request.user.name }}</h2>
+
+                    {% if age %}
+                    <p>{{ age }} years old</p>
+                    {% endif %}
+
+                    {% if profile.blood_group %}
+                    <h3 class="card-subtitle mb-2 text-muted">{{ profile.blood_group }} Donor</h3>
+                    {% else %}
+                    <a class="btn btn-outline-info rounded" href="{% url 'edit-profile' %}"> + Add Blood Group</a>
+                    <br/><br/>
+                    {% endif %}
+
+                    {% if profile.gender %}
+                    <h5 class="card-subtitle mb-2 text-muted">{{ profile.gender }}</h5>
+                    {% endif %}
+                </div>
+                <div class="card-footer text-muted" style="text-align: center">
+                    Member Since {{request.user.date_joined.date}}
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="col-12 col-sm-12 col-md-7 col-lg-8 col-xl-9">
+
+            <div class="card text-left mb-3">
+                <div class="card-header">
+                    <h4 class="card-title">Edit Profile</h4>
+                </div>
+                <form action="" class="p-4 p-md-5 border rounded" enctype="multipart/form-data" method="post">
+
+                    {% csrf_token %}
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+
+                                <div class="row">
+                                    <div class="col-12 col-sm-6">
+
+                                        <div class="form-group">
+                                            <label class="col-form-label">Phone Number</label>
+                                            {{ form.phone|add_class:"form-control" }}
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+
+                                        <div class="form-group">
+                                            <label class="col-form-label">Gender</label>
+                                            {{form.gender|add_class:"form-control"}}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 col-sm-6">
+
+                                        <div class="form-group">
+                                            <label class="col-form-label">Date of Birth</label>
+                                            {{ form.birth_date|add_class:"form-control" }}
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+
+                                        <div class="form-group">
+                                            <label class="col-form-label">Blood Group</label>
+                                            {{ form.blood_group|add_class:"form-control" }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 col-sm-6">
+
+                                        <div class="form-group">
+                                            <label class="col-form-label">Address</label>
+                                            {{ form.address|add_class:"form-control" }}
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+
+                                        <div class="form-group">
+                                            <label class="col-form-label">Last Donated On:</label><br/>
+                                            {{ form.last_donation_date|add_class:"form-control"w }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <!--                                    <div class="col-12 col-md-5">-->
+                                    <!--                                        <img class="user-profile-image img-fluid img-thumbnail"-->
+                                    <!--                                             src="https://dimikoj.com/storage/10463/einstein1_7.jpg"-->
+                                    <!--                                             style="max-height:200px; max-width:200px;"/>-->
+                                    <!--                                        <br>-->
+                                    <!--                                        <div class="form-check">-->
+                                    <!--                                            <input class="form-check-input" id="avatar_remove" name="avatar_remove"-->
+                                    <!--                                                   type="checkbox" value="avatar_remove">-->
+                                    <!--                                            <label class="form-check-label" for="avatar_remove">-->
+                                    <!--                                                &nbsp;Remove Avatar-->
+                                    <!--                                            </label>-->
+                                    <!--                                        </div>-->
+                                    <!--                                    </div>-->
+                                    <div class="col-12 col-md-12">
+                                        <div class="form-group">
+                                            <label>Click here to update photo</label>
+                                            {{ form.image|add_class:"form-control" }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-12">
+                        <button class="btn btn-block btn-primary btn-md" type="submit">Update Profile</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock %}
