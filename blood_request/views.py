@@ -9,7 +9,7 @@ from .utils import send_notification
 @login_required(login_url='login')
 def home_view(request):
     user = request.user
-    profiles = ProfileModel.objects.all()
+    profiles = ProfileModel.objects.exclude(blood_group=None)
     request_list = RequestModel.objects.all()
 
     search_keyword = request.GET.get('q')
@@ -78,6 +78,7 @@ def edit_request_view(request, pk):
     return render(request, 'request/create_request.html', context)
 
 
+@login_required(login_url='login')
 def delete_request_view(request, pk):
     request_item = RequestModel.objects.get(id=pk)
     if request.method == 'POST':
