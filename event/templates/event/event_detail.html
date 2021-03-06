@@ -11,10 +11,10 @@
         <div class="card-body">
             <h3 class="card-title">{{ event.name }}</h3>
             {% if request.user == event.host %}
-           <a class="btn btn-outline-info" href="{% url 'edit-event' event.id %}">Edit</a>
-            <a class="btn btn-outline-danger" href="{% url 'delete-event' event.id %}">Delete</a>
+            <a class="btn btn-outline-info" href="{% url 'edit-event' event.id %}">Edit Event</a>
+            <a class="btn btn-outline-danger" href="{% url 'delete-event' event.id %}">Delete Event</a>
             {% endif %}
-            <p class="card-text">{{ event.description|linebreaks }}</p>
+            <p class="card-text">{{ event.description|safe }}</p>
         </div>
         <div class="card-footer text-muted">
             Hosted by <span class="text-info mr-2">{{ event.host.name }}</span>
@@ -26,26 +26,89 @@
 </div>
 
 
-{% if request.user == event.host %}
 <!-- Sidebar Widgets Column -->
 <div class="col-md-4 mt-4">
     <!-- Side Widget -->
+
     <div class="card">
-        <h5 class="card-header text-center">Invite People</h5>
+        <h5 class="card-header text-center">{{ profiles.count }} Donor{{ profiles.count|pluralize }} Going to
+            Attend</h5>
         <div class="card-body">
             <table class="table table-hover">
 
                 {% for profile in profiles %}
                 <tr>
-                    <td><a href="{% url 'profile' profile.user.id %}" class="card-link">{{ profile.user.name }}</a></td>
-                    <td>{{ profile.blood_group }}</td>
+                    <td>
+                        <a href="{% url 'profile' profile.user.id %}" class="card-link">{{ profile.user.name }}</a>
+                    </td>
+                    <td>
+                        <p>Going</p>
+                    </td>
                 </tr>
                 {% endfor %}
 
             </table>
         </div>
     </div>
+
+
+    {% if request.user == event.host %}
+    <div class="card mt-4">
+        <h5 class="card-header text-center">Invited People</h5>
+        <div class="card-body">
+            <table class="table table-hover">
+
+                {% for person in invited_people %}
+                <tr>
+                    <td>
+                        <a href="{% url 'profile' person.id %}" class="card-link">{{ person.name }}</a>
+                    </td>
+                    <td>
+                        <form method="GET">
+                            <input name="dltPersonID" value="{{ person.id }}" hidden>
+                            <input class="btn btn-outline-danger btn-md" type="submit" name="dltInvite"
+                                   value="Delete Invitation"/>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <h5 class="card-header text-center">Invite People</h5>
+        <div class="card-body">
+            <table class="table table-hover">
+
+                {% for person in uninvited_people %}
+                <tr>
+                    <td>
+                        <a href="{% url 'profile' person.id %}" class="card-link">{{ person.name }}</a>
+                    </td>
+                    <td>
+                        <form method="GET">
+                            <input name="personID" value="{{ person.id }}" hidden>
+                            <button class="btn btn-outline-primary btn-md" type="submit">Invite</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="card mt-4">
+        <h5 class="card-header text-center">Event Location on Map</h5>
+        <div class="card-body">
+            <iframe width="100%" height="450" frameborder="0" scrolling="no" marginheight="0"
+                    marginwidth="0" src={{ location_link|safe }}></iframe>
+        </div>
+
+    </div>
 </div>
-{% endif %}
 
 {% endblock %}
