@@ -12,7 +12,7 @@
                 {% if user.profilemodel.image %}
                 <img alt="{{ user.name }}" class="card-img-top" src="{{ user.profilemodel.image.url }}">
                 {% else %}
-                <img alt="{{ user.name }}" class="card-img-top" src="{% static 'img\profile.jpg' %}">
+                <img alt="{{ user.name }}" class="card-img-top" src="{% static 'placeholder.png' %}">
                 {% endif %}
                 <div class="card-body">
                     <h2 class="card-title">{{ user.name }}</h2>
@@ -22,7 +22,7 @@
                     {% endif %}
 
                     {% if profile.blood_group %}
-                    <h3 class="card-subtitle mb-2 text-muted">{{ profile.blood_group }} Donor</h3>
+                    <h3 class="card-subtitle mb-2 text-danger">{{ profile.blood_group }} Donor</h3>
                     {% elif request.user == profile.user %}
                     <a class="btn btn-outline-info rounded" href="{% url 'edit-profile' %}"> + Add Blood Group</a>
                     <br/><br/>
