@@ -23,7 +23,9 @@ INSTALLED_APPS = [
     'user',
     'blood_request',
     'event',
+    'notification_control',
 
+    'ckeditor',
     'widget_tweaks',
     
     'django.contrib.admin',
@@ -35,6 +37,31 @@ INSTALLED_APPS = [
 ]
 
 AUTH_USER_MODEL = 'user.User'
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar_YourCustomToolbarConfig': [
+            {'name': 'basicstyles',
+             'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
+            {'name': 'clipboard', 'items': ['Undo', 'Redo']},
+            {'name': 'paragraph',
+             'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', '-',
+                       'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']},
+            '/',
+            {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
+            {'name': 'colors', 'items': ['TextColor', 'BGColor']},
+            {'name': 'tools', 'items': ['Maximize']},
+            {'name': 'links', 'items': ['Link', 'Unlink']},
+            {'name': 'insert',
+             'items': ['HorizontalRule', 'Smiley', 'SpecialChar']},
+            {'name': 'document', 'items': ['Preview', ]},
+        ],
+        'toolbar': 'YourCustomToolbarConfig',  # put selected toolbar config here
+        'height': 350,
+        'width': 650,
+        'tabSpaces': 4,
+    }
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
