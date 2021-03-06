@@ -1,5 +1,3 @@
-from datetime import date
-from blood_request.models import RequestModel
 from django.contrib import messages
 from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
@@ -7,8 +5,12 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.core.mail import send_mail
 from django.db.models import Q
 from django.shortcuts import render, redirect
+
 from .forms import *
 from .models import *
+from .utils import calculate_age
+
+from blood_request.models import RequestModel
 from event.models import EventModel
 
 
@@ -62,11 +64,7 @@ def logout_view(request):
     return redirect('login')
 
 
-def calculate_age(born):
-    today = date.today()
-    return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
-
-
+@login_required(login_url='login')
 def profile_view(request, pk):
     users = User.objects.all()
     user = User.objects.get(id=pk)
@@ -225,8 +223,8 @@ def contact_view(request):
     return render(request, 'contact.html')
 
 
+@login_required(login_url='login')
 def notification_view(request):
-
     search_keyword = request.GET.get('q')
 
     if search_keyword is not None:
@@ -244,8 +242,9 @@ def notification_view(request):
     return render(request, 'notification.html')
 
 
+@login_required(login_url='login')
 def donor_view(request):
-    profiles = ProfileModel.objects.all()
+    profiles = ProfileModel.objects.exclude(blood_group=None).order_by('blood_group')
 
     search_keyword = request.GET.get('q')
 
