@@ -1,5 +1,7 @@
 {% extends "user/base.html" %}
 
+{% load widget_tweaks %}
+
 {% block content %}
 
 <div class="col-md-8 mt-4">
@@ -12,7 +14,7 @@
                 {% csrf_token %}
                 <div class="row form-group">
                     <div class="col-md-12 mb-3 mb-md-0">
-                        {{ form.email }}
+                        {{ form.email|attr:"autofocus" }}
                         {{ form.email.errors }}
                     </div>
                 </div>
