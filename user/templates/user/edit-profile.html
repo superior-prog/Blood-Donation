@@ -13,7 +13,7 @@
                 {% if request.user.profilemodel.image %}
                 <img alt="{{ user.name }}" class="card-img-top" src="{{request.user.profilemodel.image.url}}">
                 {% else %}
-                <img alt="{{ user.name }}" class="card-img-top" src="{% static 'img\profile.jpg' %}">
+                <img alt="{{ user.name }}" class="card-img-top" src="{% static 'placeholder.png' %}">
                 {% endif %}
                 <div class="card-body">
                     <h2 class="card-title">{{ request.user.name }}</h2>
@@ -23,10 +23,7 @@
                     {% endif %}
 
                     {% if profile.blood_group %}
-                    <h3 class="card-subtitle mb-2 text-muted">{{ profile.blood_group }} Donor</h3>
-                    {% else %}
-                    <a class="btn btn-outline-info rounded" href="{% url 'edit-profile' %}"> + Add Blood Group</a>
-                    <br/><br/>
+                    <h3 class="card-subtitle mb-2 text-danger">{{ profile.blood_group }} Donor</h3>
                     {% endif %}
 
                     {% if profile.gender %}
@@ -101,7 +98,7 @@
 
                                         <div class="form-group">
                                             <label class="col-form-label">Last Donated On:</label><br/>
-                                            {{ form.last_donation_date|add_class:"form-control"w }}
+                                            {{ form.last_donation_date|add_class:"form-control" }}
                                         </div>
                                     </div>
                                 </div>
