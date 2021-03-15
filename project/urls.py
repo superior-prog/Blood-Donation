@@ -8,7 +8,9 @@ urlpatterns = [
     path('account/', include('user.urls')),
     path('', include('blood_request.urls')),
     path('event/', include('event.urls')),
-    path('notification', include('notification_control.urls')),
+    path('notifications', include('notification_control.urls')),
+
+    # path('oauth/', include('social_django.urls', namespace='social')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
