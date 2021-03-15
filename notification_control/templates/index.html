@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="col-md-8">
+    {% if not request.user.profilemodel.blood_group %}
+    <div class="alert alert-warning alert-dismissible fade show mt-4" role="alert">
+        You haven't added your Blood Group yet.
+        <a href="{% url 'edit-profile' %}" class="btn btn-info text-white text-center rounded"> + Add Now</a>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+
+    {% if notification_list %}
+    {% for request_item in request_list %}
+
+    <div class="card mb-4 mt-4">
+        <div class="card-body">
+            <p>
+                <span class="card-title h1 text-danger">{{ request_item.blood_group }}</span>
+                <span class="h4"> Blood Needed</span>
+            </p>
+            <p class="card-text">
+                <b>Address:</b> {{ request_item.address }}<br />
+                <b>Needed Within: {{ request_item.needed_within }}</b> <br />
+            </p>
+
+            <a class="btn btn-primary rounded" href="{% url 'request-detail' request_item.id %}">See More &rarr;</a>
+
+        </div>
+        <div class="card-footer text-muted">
+            Posted on <b>{{ request_item.posted_on }}</b> by
+            <span class="text-info mr-2"><a href="{% url 'profile' request_item.user.id %}">{{ request_item.user.name
+                    }}</a></span>
+        </div>
+    </div>
+    {% endfor%}
+    {% else %}
+    <p class="mt-5 text-muted">No notifications found.</p>
+    {% endif %}
+
+    <!--    {% if is_paginated %}-->
+    <!--    &lt;!&ndash; Pagination &ndash;&gt;-->
+    <!--    <ul class="pagination justify-content-center mb-4">-->
+    <!--        {% if page_obj.has_previous %}-->
+    <!--        <li class="page-item">-->
+    <!--            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&larr; Previous Page</a>-->
+    <!--        </li>-->
+    <!--        {% endif %}-->
+
+    <!--        {% if page_obj.has_next %}-->
+    <!--        <li class="page-item">-->
+    <!--            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next Page &rarr;</a>-->
+    <!--        </li>-->
+    <!--        {% endif %}-->
+    <!--    </ul>-->
+    <!--    {% endif %}-->
+
+</div>
+
+<!-- Sidebar Widgets Column -->
+<div class="col-md-4 mt-4">
+    {% if user.is_authenticated %}
+    <!-- Side Widget -->
+    <div class="card my-4">
+        <h5 class="card-header text-center">Active Donor List</h5>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead class="bg-dark text-white">
+                    <tr>
+                        <th>Name</th>
+                        <th>BG</th>
+                    </tr>
+                </thead>
+
+                {% for profile in profiles %}
+                <tr>
+                    <td><a href="{% url 'profile' profile.user.id %}" class="card-link">{{ profile.user.name }}</a></td>
+                    <td>{{ profile.blood_group }}</td>
+                </tr>
+                {% endfor %}
+
+            </table>
+            <a class="btn btn-primary btn-block" href="{% url 'donors' %}">View More</a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}
